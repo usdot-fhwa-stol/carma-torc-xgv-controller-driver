@@ -41,7 +41,7 @@ XGVApplication::XGVApplication(int argc, char **argv) :
     timeout_(1.0)
 {
     cav_msgs::DriverStatus status;
-    status.lon_controller = static_cast<unsigned char>(true);
+    status.controller = static_cast<unsigned char>(true);
     status.status = cav_msgs::DriverStatus::OFF;
 
     setStatus(status);
@@ -161,7 +161,7 @@ void XGVApplication::initialize()
     xgv_client_->vehicleModeReceivedSignal.connect([this](const XGVJausClient::VehicleModeEventArgs& args)
                                                    {
                                                         cav_msgs::DriverStatus status;
-                                                        status.lon_controller = static_cast<unsigned char>(true);
+                                                        status.controller = static_cast<unsigned char>(true);
                                                         status.status = cav_msgs::DriverStatus::OPERATIONAL;
 
                                                         setStatus(status);
@@ -186,7 +186,7 @@ void XGVApplication::pre_spin()
     {
         ROS_WARN_STREAM_THROTTLE(1,"Haven't received vehicle mode update from XGV in " << ros::Time::now() - last_recv_update_);
         cav_msgs::DriverStatus status;
-        status.lon_controller = static_cast<unsigned char>(true);
+        status.controller = static_cast<unsigned char>(true);
         status.status = cav_msgs::DriverStatus::FAULT;
 
         setStatus(status);
